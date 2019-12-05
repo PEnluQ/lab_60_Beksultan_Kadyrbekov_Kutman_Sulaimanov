@@ -5,15 +5,26 @@ import Messages from "../../components/Messages/Messages";
 class Messenger extends Component {
     state = {
         currentMessage: {author: 'Beks', message: 'Hello, guys'},
+        newMessages: [],
     };
+    componentDidMount = async () => {
+        console.log('Messenger didMount');
+        const response = await fetch('http://146.185.154.90:8000/messages');
+        if(response.ok){
+            const messages = await response.json();
+            this.setState({newMessages: messages});
+            console.log(messages);
+        } else{
+            throw new Error('Something went wrong with the request');
+        }
+    };
+
     submitMessage = (event) => {
         event.preventDefault();
-        console.log('hello');
     };
     changeAuthor = (event) => {
         const currentMessage = {...this.state.currentMessage};
         currentMessage.author = event.target.value;
-        console.log(currentMessage);
         this.setState({currentMessage}); //todo: have to check if it is correct way
     };
     changeText = (event) => {
@@ -22,7 +33,6 @@ class Messenger extends Component {
         this.setState({currentMessage}) //todo: have to check if it is correct way
     };
     render() {
-        console.log('hello');
         return (
             <div className='Messenger'>
                 <MessageSend
@@ -32,7 +42,9 @@ class Messenger extends Component {
                     authorChange={(event) => this.changeAuthor(event)}
                     textChange={(event) => this.changeText(event)}
                 />
-                <Messages/>
+                <Messages
+                    messages={this.state.newMessages}
+                />
             </div>
         );
     }

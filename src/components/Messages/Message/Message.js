@@ -5,9 +5,9 @@ class Message extends Component {
     render() {
         return (
             <div className='Message'>
-                <div className='MessageWrapper Author'><div>author</div>Beks</div>
-                <div className='MessageWrapper Text'><div>text</div>Hello</div>
-                <div className='MessageWrapper Date'><div>date</div>11.12.2019</div>
+                <div className='MessageWrapper Author'><div>author</div>{this.props.author}</div>
+                <div className='MessageWrapper Text'><div>text</div>{this.props.text}</div>
+                <div className='MessageWrapper Date'><div>date</div>{this.props.date}</div>
             </div>
         );
     }
