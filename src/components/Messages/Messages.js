@@ -3,7 +3,7 @@ import Message from "./Message/Message";
 const Messages = (props) => {
     return (
         <div className='Messages'>
-            {props.messages.reverse().map(message => (
+            {props.messages.map(message => (
                 <Message
                     key={message._id}
                     author={message.author}

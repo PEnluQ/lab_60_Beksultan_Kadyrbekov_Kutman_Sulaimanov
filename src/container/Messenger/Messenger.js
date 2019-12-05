@@ -12,7 +12,7 @@ class Messenger extends Component {
         const response = await fetch('http://146.185.154.90:8000/messages');
         if(response.ok){
             const messages = await response.json();
-            this.setState({newMessages: messages});
+            this.setState({newMessages: messages.reverse()});
             console.log(messages);
         } else{
             throw new Error('Something went wrong with the request');
@@ -33,6 +33,7 @@ class Messenger extends Component {
         this.setState({currentMessage}) //todo: have to check if it is correct way
     };
     render() {
+        console.log('[Messanger] render');
         return (
             <div className='Messenger'>
                 <MessageSend
