@@ -8,6 +8,7 @@ class Messenger extends Component {
         newMessages: [],
     };
     componentDidMount = async () => {
+
         console.log('Messenger didMount');
         const response = await fetch('http://146.185.154.90:8000/messages');
         if(response.ok){
@@ -17,6 +18,20 @@ class Messenger extends Component {
         } else{
             throw new Error('Something went wrong with the request');
         }
+        const interval = setInterval(async () => {
+            const lastDateTime = this.state.newMessages[0].datetime;
+            const newResponse = await fetch(`http://146.185.154.90:8000/messages?datetime=${lastDateTime}`);
+            if(newResponse.ok){
+                const newMessages = await newResponse.json();
+                if(newMessages.length){
+                    const messages = [...this.state.newMessages.reverse()];
+                    messages.push(...newMessages);
+                    this.setState({newMessages: messages.reverse()})
+                }
+            }
+        }, 2000);
+        //todo: IS it ok to have two setStates
+
     };
 
     submitMessage = async (event) => {
@@ -26,6 +41,7 @@ class Messenger extends Component {
         data.set('message', this.state.currentMessage.message);
         data.set('author', this.state.currentMessage.author);
         const sendingD = await fetch(url, {method: 'post', body: data});
+        this.setState({currentMessage: {author: '', message: ''}});
         if(!sendingD.ok){
             throw new Error('Something went wrong while sending your data')
         }
