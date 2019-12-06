@@ -19,8 +19,16 @@ class Messenger extends Component {
         }
     };
 
-    submitMessage = (event) => {
+    submitMessage = async (event) => {
         event.preventDefault();
+        const url = 'http://146.185.154.90:8000/messages';
+        const data = new URLSearchParams();
+        data.set('message', this.state.currentMessage.message);
+        data.set('author', this.state.currentMessage.author);
+        const sendingD = await fetch(url, {method: 'post', body: data});
+        if(!sendingD.ok){
+            throw new Error('Something went wrong while sending your data')
+        }
     };
     changeAuthor = (event) => {
         const currentMessage = {...this.state.currentMessage};
