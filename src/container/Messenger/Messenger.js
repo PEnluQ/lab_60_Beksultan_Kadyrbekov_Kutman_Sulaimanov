@@ -15,8 +15,11 @@ class Messenger extends Component {
         } else{
             throw new Error('Something went wrong with the request');
         }
-        setInterval(async () => {
-            const lastDateTime = this.state.newMessages[0].datetime;
+    };
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        clearInterval(this.interval);
+        const lastDateTime = this.state.newMessages[0].datetime;
+        if (lastDateTime) this.interval = setInterval(async () => {
             const newResponse = await fetch(`http://146.185.154.90:8000/messages?datetime=${lastDateTime}`);
             if(newResponse.ok){
                 const newMessages = await newResponse.json();
@@ -27,8 +30,7 @@ class Messenger extends Component {
                 }
             }
         }, 2000);
-    };
-
+    }
     submitMessage = async (event) => {
         event.preventDefault();
         const url = 'http://146.185.154.90:8000/messages';
