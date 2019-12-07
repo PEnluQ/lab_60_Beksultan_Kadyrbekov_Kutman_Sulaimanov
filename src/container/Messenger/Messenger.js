@@ -8,17 +8,14 @@ class Messenger extends Component {
         newMessages: [],
     };
     componentDidMount = async () => {
-
-        console.log('Messenger didMount');
         const response = await fetch('http://146.185.154.90:8000/messages');
         if(response.ok){
             const messages = await response.json();
             this.setState({newMessages: messages.reverse()});
-            console.log(messages);
         } else{
             throw new Error('Something went wrong with the request');
         }
-        const interval = setInterval(async () => {
+        setInterval(async () => {
             const lastDateTime = this.state.newMessages[0].datetime;
             const newResponse = await fetch(`http://146.185.154.90:8000/messages?datetime=${lastDateTime}`);
             if(newResponse.ok){
@@ -30,8 +27,6 @@ class Messenger extends Component {
                 }
             }
         }, 2000);
-        //todo: IS it ok to have two setStates
-
     };
 
     submitMessage = async (event) => {
@@ -49,15 +44,14 @@ class Messenger extends Component {
     changeAuthor = (event) => {
         const currentMessage = {...this.state.currentMessage};
         currentMessage.author = event.target.value;
-        this.setState({currentMessage}); //todo: have to check if it is correct way
+        this.setState({currentMessage});
     };
     changeText = (event) => {
         const currentMessage = {...this.state.currentMessage};
         currentMessage.message = event.target.value;
-        this.setState({currentMessage}) //todo: have to check if it is correct way
+        this.setState({currentMessage});
     };
     render() {
-        console.log('[Messanger] render');
         return (
             <div className='Messenger'>
                 <MessageSend

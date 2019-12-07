@@ -5,9 +5,7 @@ class Message extends Component {
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return nextProps.id !== this.props.id
     }
-
     render() {
-        console.log('[Message] render');
         return (
             <div className='Message'>
                 <div className='MessageWrapper Author'><div>author</div>{this.props.author}</div>
